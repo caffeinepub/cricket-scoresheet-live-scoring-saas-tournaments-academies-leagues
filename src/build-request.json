@@ -1,0 +1,296 @@
+{
+  "kind": "build_request",
+  "title": "Cricket Scoresheet & Live Scoring SaaS (Tournaments/Academies/Leagues)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement backend data model and persistence for a multi-tournament cricket scoring SaaS, storing: Users (with roles), Tournaments, Teams, Players, Matches, Innings, and BallByBall events, plus derived per-innings and per-player statistics that can be queried efficiently.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Use built-in database to store: Matches Teams Players Ball-by-ball events Statistics Users",
+          "SaaS Requirements: - Multi-tournament support"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes CRUD/query methods for tournaments, teams, players, matches, and ball-by-ball events.",
+        "Data is persisted in canister stable structures so refresh/reload retains created entities.",
+        "Entities are linked correctly (e.g., match belongs to tournament; players belong to teams; events belong to an innings/match)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add authentication and authorization using Internet Identity, and enforce role-based access control across backend methods and frontend routes: Admin (full access), Scorer (can create/update matches and submit ball-by-ball scoring), Viewer (read-only).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "User Roles: - Admin (full access) - Scorer (can score matches) - Viewer (read-only access)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users can only access read-only public pages if allowed; privileged pages/actions require login.",
+        "Backend rejects unauthorized mutations (e.g., Viewer cannot score or manage teams).",
+        "Frontend hides/disables actions not allowed for the current role and shows an English error message if a forbidden action is attempted."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create a modern sports dashboard UI shell with responsive sidebar navigation and pages: Dashboard, Matches, Live Scoring, Scoreboard, Teams, Players, Reports; ensure consistent layout and mobile responsiveness.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "UI Requirements: - Modern sports dashboard design - Clean professional interface - Mobile responsive - Easy navigation sidebar",
+          "Output: Generate complete working web application with: Dashboard Match creation page Live scoring page Scoreboard page Team management page Player management page Reports page"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a sidebar/nav that provides clear access to all required pages.",
+        "Layout works on mobile and desktop (no horizontal overflow; primary actions remain accessible).",
+        "All user-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Establish a coherent, distinct visual theme for the app (colors, typography, spacing, components) suitable for a professional sports dashboard, and apply it consistently across all pages (avoid blue/purple as the primary palette).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Modern sports dashboard design",
+          "Clean professional interface"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard, tables, cards, and scoring controls share a consistent theme (same component styling and spacing).",
+        "Primary and destructive actions are visually distinct and accessible (contrast and focus states)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement Tournament management UX and API integration: create/list/select tournament context and scope all matches/teams/players views and creation flows to the selected tournament.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "SaaS Requirements: - Multi-tournament support - Reusable system structure",
+          "Tournament Support: - Support multiple matches - Store match history - Store match results"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create a tournament and switch the active tournament in the UI.",
+        "Teams, players, matches lists only show items for the active tournament.",
+        "Backend queries require a tournamentId and return only records for that tournament (unless Admin has an explicit all-tournaments query)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Build Team Management: create teams, view team list/details, add/remove players to/from teams, and assign a captain per team.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Team Management: - Create teams - Add players to teams - Assign captain - Store team data"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create a team with name and basic metadata under the active tournament.",
+        "User can add existing players to a team and assign exactly one captain.",
+        "Team detail view shows roster and captain clearly."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Build Player Management: create players, assign a default team (optional), and display player statistics (aggregated from ball-by-ball events) including batting and bowling summaries.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Player Management: - Add players - Assign team - Track player statistics",
+          "Statistics Engine: - Calculate batsman runs - Calculate balls faced - Calculate strike rate - Calculate bowler wickets - Calculate economy rate"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create a player and optionally assign them to a team within the active tournament.",
+        "Player list and player detail pages load from backend and show computed stats from recorded matches/events.",
+        "Stats shown include at least runs, balls, strike rate, wickets, and economy (where applicable)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Implement Match Management: create a match (select Team A/Team B, overs limit), track match status (Upcoming/Live/Completed), and support start/end match actions.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Match Management: - Create new match - Select Team A and Team B - Set overs limit - Start and end match - Match status tracking (Upcoming, Live, Completed)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Match creation form requires Team A, Team B, and overs limit; it prevents selecting the same team twice.",
+        "Match list shows status badges for Upcoming/Live/Completed.",
+        "Start Match transitions status to Live; End Match transitions status to Completed and locks scoring."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Implement Live Scoring Panel for ball-by-ball input for a Live match, including fast buttons for runs (0,1,2,3,4,6), Wicket, Wide, and No Ball, and persist each delivery/event to the backend.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Live Scoring Panel: - Ball-by-ball scoring interface - Buttons for runs (0, 1, 2, 3, 4, 6) - Wicket button - Wide ball button - No ball button - Automatic score calculation - Automatic overs tracking - Automatic wickets tracking"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Scoring UI provides one-tap run buttons and explicit actions for Wicket/Wide/No Ball.",
+        "Submitting an event creates a ball-by-ball record in backend associated with the correct match/innings.",
+        "UI shows the last N balls/events recorded and updates immediately after submission."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Create the scoring and statistics engine that derives match state from ball-by-ball events: total runs, wickets, overs/balls, run rate, current batsman/bowler, batsman runs/balls/strike rate, bowler wickets/economy, and match summary statistics.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "PRIMARY GOAL: ... system automatically calculates total score, overs, wickets, run rate, and player statistics.",
+          "Statistics Engine: - Calculate batsman runs - Calculate balls faced - Calculate strike rate - Calculate bowler wickets - Calculate economy rate - Calculate match statistics"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Given a sequence of ball-by-ball events, backend returns consistent derived state (runs, wickets, overs, run rate).",
+        "Batsman stats (runs, balls faced, strike rate) and bowler stats (wickets, economy) match the recorded events.",
+        "Completed matches have a stored result/summary retrievable via match history endpoints."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Implement Live Scoreboard Display page for a selected match showing: team score (Runs/Wickets), overs, run rate, current batsman, current bowler, and match status, and ensure it auto-refreshes while the match is Live.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Live Scoreboard Display: - Show team score (Runs/Wickets) - Show overs - Show run rate - Show current batsman - Show current bowler - Show live match status - Auto refresh scoreboard",
+          "Live Features: - Real-time scoreboard updates - Instant score calculation"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Scoreboard page renders all required fields for a selected match.",
+        "While match status is Live, the displayed data updates automatically without manual refresh (e.g., periodic polling).",
+        "When match is Completed, the scoreboard stops auto-refreshing and shows final summary."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Build Dashboard page showing KPIs and recent activity: total matches, live matches, teams count, players count, and a recent matches list (scoped to the active tournament).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Dashboard: - Show total matches - Show live matches - Show teams count - Show players count - Show recent matches"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard shows KPI cards for total matches, live matches, teams count, players count.",
+        "Dashboard shows a recent matches list with status and basic score/summary where available.",
+        "All counts and lists reflect the active tournament selection."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Implement Reports page that can generate and display match summaries for completed matches, including innings totals, fall of wickets (if available from events), and top batting/bowling performers computed from recorded events.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3"
+        ],
+        "quotes": [
+          "Live Features: - Match summary generation",
+          "Output: ... Reports page"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Reports page lists completed matches and opens a match report view.",
+        "Match report view includes final score, overs, run rate (where relevant), and top performer sections derived from stats engine.",
+        "Viewer role can access reports; Scorer/Admin can access reports plus their role-specific pages."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add static generated brand assets and integrate them into the UI (app logo + subtle dashboard background/hero) by serving them from frontend static assets (not via backend).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Modern sports dashboard design",
+          "Clean professional interface"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated and referenced directly by the frontend.",
+        "Logo appears in the sidebar/header, and background/hero art is used subtly without harming readability."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not request or implement third-party authentication providers; use Internet Identity only.",
+    "Do not edit any files under frontend/src/components/ui or other immutable paths listed by the system; compose those components instead.",
+    "Do not use WebSockets/Socket.io; implement live updates via polling/refresh mechanisms compatible with the platform."
+  ],
+  "nonGoals": [
+    "Implementing advanced cricket rules and edge cases not specified (e.g., Duckworth–Lewis–Stern, penalty runs, retired hurt handling, super overs).",
+    "Building public embeds, streaming, or real-time chat/commentary.",
+    "Payments/subscriptions/billing flows for SaaS.",
+    "Offline-first mobile app behavior."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Cricket-themed app logo, clean modern mark, flat vector style (cric-logo.dim_512x512.png)",
+      "Subtle sports dashboard background illustration featuring cricket pitch elements, low-contrast, minimal detail (dashboard-bg.dim_1920x1080.png)"
+    ],
+    "edits": []
+  }
+}

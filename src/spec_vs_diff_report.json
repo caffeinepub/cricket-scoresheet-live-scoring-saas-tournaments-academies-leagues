@@ -1,0 +1,150 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T09:27:22.600Z",
+  "summary": "The diff adds a new Motoko backend actor plus a React dashboard shell with tournament switching, basic CRUD hooks, and partial match/live-scoring UI. However, key requirements around stable persistence, full RBAC with Admin/Scorer/Viewer, tournament scoping for players, match lifecycle controls, and the scoring/statistics + reports/scoreboard functionality appear unimplemented or explicitly marked as pending in the UI.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Persist all core entities (Users/roles, Tournaments, Teams, Players, Matches, Innings, BallByBall) in stable canister structures so data survives refresh/reload, with correct linking.",
+      "reason": "The backend state shown uses in-memory vars and Maps with no stable storage patterns visible (e.g., no `stable var`/stable serialization shown in the truncated file).",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Enforce Internet Identity auth + role-based access control (Admin/Scorer/Viewer) across backend methods and frontend routes/actions (Viewer read-only; Scorer/Admin can mutate; forbidden actions show English error).",
+      "reason": "Frontend gating is based on `isAuthenticated` only (no Admin/Scorer/Viewer checks), and profile setup hard-codes `role: 'user'` rather than the required roles. Backend access-control enforcement for specific mutations is not evidenced in the diff excerpt.",
+      "evidence": [
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/pages/MatchesPage.tsx",
+        "frontend/src/pages/PlayersPage.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Scope all matches/teams/players views and creation flows to the selected tournament; backend queries require tournamentId and return only records for that tournament (except explicit admin all-tournaments query).",
+      "reason": "Players queries are not scoped by tournament (usePlayers has only optional teamId and Player type lacks a tournamentId in the visible backend model), so players cannot be reliably filtered by active tournament as required.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts",
+        "backend/main.mo",
+        "frontend/src/pages/PlayersPage.tsx",
+        "frontend/src/pages/DashboardPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Team management includes add/remove players to/from teams and assign exactly one captain; team detail view shows roster and captain clearly.",
+      "reason": "The diff shows team creation/listing hooks, but no evidenced UI/actions for adding/removing players from a team or setting a captain, and no shown backend methods supporting those operations.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Display player statistics aggregated from ball-by-ball events (runs, balls, strike rate, wickets, economy).",
+      "reason": "Player detail page displays placeholder zeros and explicitly states stats require backend implementation; no computed stats are shown.",
+      "evidence": [
+        "frontend/src/pages/PlayerDetailPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Match management includes status transitions (Upcoming/Live/Completed) with Start Match and End Match actions; ending locks scoring.",
+      "reason": "UI indicates start-match functionality is not implemented (“requires backend implementation”), and there is no evidence of start/end match actions being wired; scoring lock is only checked client-side for Completed status.",
+      "evidence": [
+        "frontend/src/pages/LiveScoringPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Live scoring panel persists each delivery and shows last N balls/events recorded, updating immediately after submission.",
+      "reason": "Ball submission is implemented, but the panel does not show a last-N recent balls list; it also includes an alert stating recent balls display requires backend implementation.",
+      "evidence": [
+        "frontend/src/components/scoring/LiveScoringPanel.tsx"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Backend scoring/statistics engine deriving match state from ball-by-ball events (runs/wickets/overs/run rate, batsman/bowler stats, stored results for completed matches).",
+      "reason": "The live scoring UI includes an explicit warning that “Full scoreboard calculation … require backend implementation of innings tracking and derived statistics,” and the reports UI similarly indicates missing backend summary generation.",
+      "evidence": [
+        "frontend/src/components/scoring/LiveScoringPanel.tsx",
+        "frontend/src/pages/MatchReportPage.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Scoreboard page displays required fields and auto-refreshes via polling while match is Live, stopping when Completed and showing final summary.",
+      "reason": "No evidence in the provided diff excerpt shows a scoreboard implementation with polling/auto-refresh or final summary behavior; the live scoring panel also signals scoreboard calculation is not implemented.",
+      "evidence": [
+        "frontend/src/components/scoring/LiveScoringPanel.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "Reports page + match report view with innings totals, fall of wickets (if available), and top performers computed from stats engine; Viewer can access reports.",
+      "reason": "Match report page is a placeholder with 0/0 values and explicitly states the report requires backend summary generation from ball-by-ball events; no evidence of computed performers or fall-of-wickets.",
+      "evidence": [
+        "frontend/src/pages/MatchReportPage.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Hidden/secret admin initialization via URL parameter `caffeineAdminToken` and `_initializeAccessControlWithSecret` call.",
+      "reason": "BuildRequest did not ask for secret-token based admin bootstrapping; it only specified Internet Identity and role-based access control (and disallowed third-party auth providers).",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Caffeine.ai promotional footer link in the sidebar.",
+      "reason": "Not requested by the BuildRequest requirements or acceptance criteria.",
+      "evidence": [
+        "frontend/src/layout/SidebarNav.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.72,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/scoring/LiveScoringPanel.tsx",
+    "frontend/src/components/tournaments/TournamentSwitcher.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useCurrentUser.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/layout/AppShell.tsx",
+    "frontend/src/layout/SidebarNav.tsx",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LiveScoringPage.tsx",
+    "frontend/src/pages/MatchReportPage.tsx",
+    "frontend/src/pages/MatchesPage.tsx",
+    "frontend/src/pages/PlayerDetailPage.tsx",
+    "frontend/src/pages/PlayersPage.tsx",
+    "frontend/src/pages/ReportsPage.tsx",
+    "frontend/src/pages/ScoreboardPage.tsx",
+    "frontend/src/pages/TeamDetailPage.tsx",
+    "frontend/src/pages/TeamsPage.tsx",
+    "frontend/src/state/TournamentContext.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

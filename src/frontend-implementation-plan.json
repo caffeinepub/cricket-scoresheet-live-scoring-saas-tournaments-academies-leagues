@@ -1,0 +1,455 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Cricket Scoresheet & Live Scoring SaaS — Frontend",
+  "requirements": [
+    {
+      "id": "REQ-2",
+      "summary": "Add Internet Identity login + role-aware route/action guarding in the UI.",
+      "acceptanceCriteria": [
+        "Unauthenticated users can only access read-only public pages if allowed; privileged pages/actions require login.",
+        "Frontend hides/disables actions not allowed for the current role and shows an English error message if a forbidden action is attempted."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app root with routing that integrates Internet Identity session state and applies role-aware route gating (Admin/Scorer/Viewer). Use the selected authorization component patterns for login/profile bootstrap and forbidden-action error handling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/auth/RequireAuth.tsx",
+          "operation": "create",
+          "description": "Add a route wrapper that requires login before accessing protected areas, supports read-only access for viewers, and renders an English Access Denied screen when appropriate. Use the selected authorization component guidance for handling backend authorization errors gracefully. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/auth/RequireRole.tsx",
+          "operation": "create",
+          "description": "Add a role-based wrapper (Admin/Scorer/Viewer) that can be used at both route-level and action-level to hide/disable controls and prevent navigation into unauthorized screens. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUser.ts",
+          "operation": "create",
+          "description": "Create a React Query hook that loads the caller profile + caller role from the backend actor (getCallerUserProfile/getCallerUserRole) and exposes a unified auth/role state for the UI. Follow the selected authorization component recommendation to prevent profile setup modal flash. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a login/logout button using the Internet Identity hook; on logout, clear cached React Query data. Follow the selected authorization component login UI guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Add a first-login profile setup dialog (ask for name) that calls saveCallerUserProfile and does not flash during initial load. Use shadcn-ui dialog/form primitives for a consistent UX. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Ensure actor lifecycle works with anonymous vs authenticated sessions and that auth changes properly invalidate/refetch dependent queries; keep initialization behavior compatible with Internet Identity usage and role-based access checks."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build a responsive sports dashboard UI shell with sidebar navigation and required pages wired into routing.",
+      "acceptanceCriteria": [
+        "App has a sidebar/nav that provides clear access to all required pages.",
+        "Layout works on mobile and desktop (no horizontal overflow; primary actions remain accessible).",
+        "All user-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a responsive layout with a sidebar (collapsible on mobile) and a main content area. Use shadcn-ui components (e.g., Sheet/Drawer for mobile nav, Button, Separator) for the shell UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/layout/SidebarNav.tsx",
+          "operation": "create",
+          "description": "Implement sidebar navigation links to Dashboard, Matches, Live Scoring, Scoreboard, Teams, Players, and Reports; include a small header area for the brand logo and tournament selector. Use shadcn-ui navigation primitives/buttons for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Dashboard page placeholder wired into the app shell; KPIs and recent matches will be implemented under REQ-12. Use shadcn-ui Card components for page structure. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MatchesPage.tsx",
+          "operation": "create",
+          "description": "Create the Matches page placeholder wired into routing; match creation/list will be implemented under REQ-8. Use shadcn-ui Table/Card components for layout consistency. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LiveScoringPage.tsx",
+          "operation": "create",
+          "description": "Create the Live Scoring page placeholder wired into routing; ball-by-ball controls will be implemented under REQ-9. Use shadcn-ui layout components for consistent spacing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ScoreboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Scoreboard page placeholder wired into routing; live auto-refresh will be implemented under REQ-11. Use shadcn-ui Card/Badge components for a dashboard look. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/TeamsPage.tsx",
+          "operation": "create",
+          "description": "Create the Teams page placeholder wired into routing; team CRUD/roster/captain UX will be implemented under REQ-6. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/PlayersPage.tsx",
+          "operation": "create",
+          "description": "Create the Players page placeholder wired into routing; player CRUD/stats UX will be implemented under REQ-7. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ReportsPage.tsx",
+          "operation": "create",
+          "description": "Create the Reports page placeholder wired into routing; completed match reports will be implemented under REQ-13. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Update app bootstrap to ensure the correct global CSS is imported (create/align frontend/src/index.css) and that the App component resolves correctly."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Define and apply a consistent sports dashboard theme (non blue/purple primary) across the frontend.",
+      "acceptanceCriteria": [
+        "Dashboard, tables, cards, and scoring controls share a consistent theme (same component styling and spacing).",
+        "Primary and destructive actions are visually distinct and accessible (contrast and focus states)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add the global Tailwind layers and CSS variables for the app theme; set a distinct professional palette with a non-blue/non-purple primary (e.g., deep green/charcoal) and ensure accessible focus/contrast tokens."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Align Tailwind theme tokens (primary/secondary/destructive/sidebar/chart) with the chosen sports dashboard palette and ensure consistent spacing/typography defaults."
+        },
+        {
+          "path": "frontend/src/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Apply consistent spacing/typography patterns and ensure primary/destructive actions are visually distinct using shadcn-ui variants/classes. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add tournament context selection and scope all pages/queries to the active tournament.",
+      "acceptanceCriteria": [
+        "User can create a tournament and switch the active tournament in the UI.",
+        "Teams, players, matches lists only show items for the active tournament."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/state/TournamentContext.tsx",
+          "operation": "create",
+          "description": "Create a React context/provider that stores the active tournamentId (persisted in localStorage) and exposes setters for switching tournaments."
+        },
+        {
+          "path": "frontend/src/hooks/useTournaments.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for listing tournaments and creating tournaments via the backend actor; integrate cache invalidation on create."
+        },
+        {
+          "path": "frontend/src/components/tournaments/TournamentSwitcher.tsx",
+          "operation": "create",
+          "description": "Create a tournament switcher UI (list + create) for the sidebar/header using shadcn-ui Select/Popover/Dialog components for a polished UX. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/layout/SidebarNav.tsx",
+          "operation": "modify",
+          "description": "Wire TournamentSwitcher into the sidebar and ensure navigation links and page content are scoped to the active tournament. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MatchesPage.tsx",
+          "operation": "modify",
+          "description": "Scope match listing and match creation flows to the active tournament context (tournamentId required for match queries/creation)."
+        },
+        {
+          "path": "frontend/src/pages/TeamsPage.tsx",
+          "operation": "modify",
+          "description": "Scope team listing/creation and team detail navigation to the active tournament context."
+        },
+        {
+          "path": "frontend/src/pages/PlayersPage.tsx",
+          "operation": "modify",
+          "description": "Scope player listing/creation and stats views to the active tournament context (via team selection and/or tournament-scoped lists as supported)."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Scope KPI computations and recent activity queries to the active tournament context."
+        },
+        {
+          "path": "frontend/src/pages/ReportsPage.tsx",
+          "operation": "modify",
+          "description": "Scope completed match report listing to the active tournament context."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement Team Management UI: create teams, view details, manage roster, and assign a captain.",
+      "acceptanceCriteria": [
+        "User can create a team with name and basic metadata under the active tournament.",
+        "User can add existing players to a team and assign exactly one captain.",
+        "Team detail view shows roster and captain clearly."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTeams.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for listing teams (by tournamentId), creating teams, fetching a team, and mutating roster/captain (wired to backend capabilities once available)."
+        },
+        {
+          "path": "frontend/src/pages/TeamsPage.tsx",
+          "operation": "modify",
+          "description": "Implement team list and create-team dialog/form scoped to the active tournament using shadcn-ui Table/Card/Dialog/Form components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/TeamDetailPage.tsx",
+          "operation": "create",
+          "description": "Add a team detail view showing roster and captain; include add/remove player controls and captain assignment UI with role-based disabling for unauthorized roles. Use shadcn-ui components for list controls and dialogs. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the TeamDetailPage into routing/navigation (e.g., /teams/:teamId) so it is reachable from TeamsPage."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any missing team roster/captain mutation capabilities that the backend will provide (keep types aligned with backend once implemented)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement Player Management UI: create players, optional default team assignment, and player stats display.",
+      "acceptanceCriteria": [
+        "User can create a player and optionally assign them to a team within the active tournament.",
+        "Player list and player detail pages load from backend and show computed stats from recorded matches/events.",
+        "Stats shown include at least runs, balls, strike rate, wickets, and economy (where applicable)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/usePlayers.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for listing players (optionally filtered), creating players, fetching a player, and loading stats summaries derived from recorded events (via backend-provided computed outputs once available)."
+        },
+        {
+          "path": "frontend/src/pages/PlayersPage.tsx",
+          "operation": "modify",
+          "description": "Implement player list and create-player dialog/form with optional team assignment (team picker scoped to active tournament) using shadcn-ui Table/Dialog/Form components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/PlayerDetailPage.tsx",
+          "operation": "create",
+          "description": "Add a player detail view that shows batting/bowling summary fields (runs, balls, strike rate, wickets, economy) and basic metadata; handle 'no stats yet' states in English. Use shadcn-ui Card/Badge components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the PlayerDetailPage into routing/navigation (e.g., /players/:playerId) so it is reachable from PlayersPage."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any missing computed player statistics shapes/methods the backend will provide."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Implement Match Management UI: create matches, show status badges, and start/end match actions with scoring lock on completion.",
+      "acceptanceCriteria": [
+        "Match creation form requires Team A, Team B, and overs limit; it prevents selecting the same team twice.",
+        "Match list shows status badges for Upcoming/Live/Completed.",
+        "Start Match transitions status to Live; End Match transitions status to Completed and locks scoring."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useMatches.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for listing matches by tournamentId, creating matches, fetching a match, and triggering start/end actions (wired to backend capabilities once available)."
+        },
+        {
+          "path": "frontend/src/components/matches/MatchCreateDialog.tsx",
+          "operation": "create",
+          "description": "Implement match creation dialog/form with Team A/Team B selectors and overs limit input; prevent selecting the same team twice and show English validation messages. Use shadcn-ui Dialog/Form/Select components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MatchesPage.tsx",
+          "operation": "modify",
+          "description": "Implement match list table/cards scoped to the active tournament, including status badges and navigation to Live Scoring and Scoreboard pages for the selected match. Use shadcn-ui Badge/Table/Button components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any missing match lifecycle capabilities (start/end/status update) that the backend will provide."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement Live Scoring Panel UI for ball-by-ball input and immediate display of recent deliveries.",
+      "acceptanceCriteria": [
+        "Scoring UI provides one-tap run buttons and explicit actions for Wicket/Wide/No Ball.",
+        "Submitting an event creates a ball-by-ball record in backend associated with the correct match/innings.",
+        "UI shows the last N balls/events recorded and updates immediately after submission."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/scoring/LiveScoringPanel.tsx",
+          "operation": "create",
+          "description": "Build the scoring control panel with fast buttons for 0/1/2/3/4/6 plus Wicket/Wide/No Ball, batsman/bowler selectors, and an English confirmation/error area. Use shadcn-ui Button/Toggle/Select/Card components for cohesive controls. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/scoring/RecentBalls.tsx",
+          "operation": "create",
+          "description": "Render the last N recorded deliveries/events for the active innings/match in a compact, readable strip/list with clear labeling for wides/no-balls/wickets. Use shadcn-ui Badge components for event chips. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LiveScoringPage.tsx",
+          "operation": "modify",
+          "description": "Wire LiveScoringPanel + RecentBalls into the Live Scoring page; load the selected match, ensure match selection is explicit (route param), and disable scoring controls when the match is Completed or when role is Viewer."
+        },
+        {
+          "path": "frontend/src/hooks/useLiveScoring.ts",
+          "operation": "create",
+          "description": "Add a hook that submits deliveries via backend addBall and refreshes relevant match/scoreboard queries; provide optimistic UI updates for the recent balls list when safe."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire navigation/routing for a specific match's live scoring view (e.g., /matches/:matchId/live) from Matches page actions."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any missing list/query capabilities needed to fetch ball-by-ball history for RecentBalls (keep aligned with backend once implemented)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Implement Live Scoreboard page with auto-refresh polling while match is Live.",
+      "acceptanceCriteria": [
+        "Scoreboard page renders all required fields for a selected match.",
+        "While match status is Live, the displayed data updates automatically without manual refresh (e.g., periodic polling).",
+        "When match is Completed, the scoreboard stops auto-refreshing and shows final summary."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ScoreboardPage.tsx",
+          "operation": "modify",
+          "description": "Implement scoreboard UI showing runs/wickets, overs, run rate, current batsman, current bowler, and match status; stop polling when status is Completed and show final summary fields in English. Use shadcn-ui Card/Badge components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useScoreboardPolling.ts",
+          "operation": "create",
+          "description": "Create a polling hook that refreshes match/scoreboard derived state on an interval only while match status is Live, without WebSockets."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire navigation/routing for a specific match scoreboard view (e.g., /matches/:matchId/scoreboard) from Matches and Reports pages."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any backend-provided derived scoreboard state shape/methods needed for efficient rendering (keep aligned with backend once implemented)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Implement Dashboard KPIs and recent activity scoped to the active tournament.",
+      "acceptanceCriteria": [
+        "Dashboard shows KPI cards for total matches, live matches, teams count, players count.",
+        "Dashboard shows a recent matches list with status and basic score/summary where available.",
+        "All counts and lists reflect the active tournament selection."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Implement KPI cards and a recent matches list scoped to the active tournament; compute counts from tournament-scoped lists and show English empty/loading states. Use shadcn-ui Card/Table components for consistent dashboard styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDashboardData.ts",
+          "operation": "create",
+          "description": "Create a hook that aggregates tournament-scoped queries (matches/teams/players) into dashboard-ready KPI data and recent activity."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Implement Reports UI for completed match summaries and top performers (viewer-accessible).",
+      "acceptanceCriteria": [
+        "Reports page lists completed matches and opens a match report view.",
+        "Match report view includes final score, overs, run rate (where relevant), and top performer sections derived from stats engine.",
+        "Viewer role can access reports; Scorer/Admin can access reports plus their role-specific pages."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ReportsPage.tsx",
+          "operation": "modify",
+          "description": "Implement a completed-matches list for the active tournament and navigation into a report detail view; ensure Viewer role can access this page."
+        },
+        {
+          "path": "frontend/src/pages/MatchReportPage.tsx",
+          "operation": "create",
+          "description": "Create a match report detail view showing final score, overs, run rate, innings totals, fall of wickets (if available), and top batting/bowling performers; handle missing data gracefully in English. Use shadcn-ui Card/Table components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useReports.ts",
+          "operation": "create",
+          "description": "Add hooks for loading completed matches and fetching a single match report summary derived from backend computed stats once available."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the MatchReportPage into routing (e.g., /reports/:matchId) and ensure it is reachable from ReportsPage and optionally from Scoreboard."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend frontend type declarations to include any backend-provided match report/summary capabilities and types needed by the report views."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Integrate generated brand assets (logo + subtle dashboard background) via frontend static assets.",
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated and referenced directly by the frontend.",
+        "Logo appears in the sidebar/header, and background/hero art is used subtly without harming readability."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/cric-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated logo image as a static asset at frontend/public/assets/generated/cric-logo.dim_512x512.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/dashboard-bg.dim_1920x1080.png",
+          "operation": "create",
+          "description": "Add the generated dashboard background illustration as a static asset at frontend/public/assets/generated/dashboard-bg.dim_1920x1080.png."
+        },
+        {
+          "path": "frontend/src/layout/SidebarNav.tsx",
+          "operation": "modify",
+          "description": "Render the static logo from frontend/public/assets/generated/cric-logo.dim_512x512.png in the sidebar header area with appropriate sizing for desktop/mobile. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Apply a subtle background/hero treatment using frontend/public/assets/generated/dashboard-bg.dim_1920x1080.png (low-contrast) while preserving readability and contrast for text/content. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

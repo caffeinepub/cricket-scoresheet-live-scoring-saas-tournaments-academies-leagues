@@ -1,0 +1,265 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-authentication-and-authorization-using-internet-identity-and-enforce-role-based-access-control-across-backend-methods-and-frontend-routes-admin-full-access-scorer-can-create-update-matches-and-submit-ball-by-ball-scoring-viewer-read-only",
+      "featureTitle": "Add authentication and authorization using Internet Identity, and enforce role-based access control across backend methods and frontend routes: Admin (full access), Scorer (can create/update matches and submit ball-by-ball scoring), Viewer (read-only).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/hooks/useCurrentUser.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-modern-sports-dashboard-ui-shell-with-responsive-sidebar-navigation-and-pages-dashboard-matches-live-scoring-scoreboard-teams-players-reports-ensure-consistent-layout-and-mobile-responsiveness",
+      "featureTitle": "Create a modern sports dashboard UI shell with responsive sidebar navigation and pages: Dashboard, Matches, Live Scoring, Scoreboard, Teams, Players, Reports; ensure consistent layout and mobile responsiveness.",
+      "files": [
+        "frontend/src/layout/AppShell.tsx",
+        "frontend/src/layout/SidebarNav.tsx",
+        "frontend/src/main.tsx",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/pages/LiveScoringPage.tsx",
+        "frontend/src/pages/MatchesPage.tsx",
+        "frontend/src/pages/PlayersPage.tsx",
+        "frontend/src/pages/ReportsPage.tsx",
+        "frontend/src/pages/ScoreboardPage.tsx",
+        "frontend/src/pages/TeamsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-establish-a-coherent-distinct-visual-theme-for-the-app-colors-typography-spacing-components-suitable-for-a-professional-sports-dashboard-and-apply-it-consistently-across-all-pages-avoid-blue-purple-as-the-primary-palette",
+      "featureTitle": "Establish a coherent, distinct visual theme for the app (colors, typography, spacing, components) suitable for a professional sports dashboard, and apply it consistently across all pages (avoid blue/purple as the primary palette).",
+      "files": [
+        "frontend/src/index.css",
+        "frontend/src/layout/AppShell.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-tournament-management-ux-and-api-integration-create-list-select-tournament-context-and-scope-all-matches-teams-players-views-and-creation-flows-to-the-selected-tournament",
+      "featureTitle": "Implement Tournament management UX and API integration: create/list/select tournament context and scope all matches/teams/players views and creation flows to the selected tournament.",
+      "files": [
+        "frontend/src/components/tournaments/TournamentSwitcher.tsx",
+        "frontend/src/layout/SidebarNav.tsx",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/pages/MatchesPage.tsx",
+        "frontend/src/pages/PlayersPage.tsx",
+        "frontend/src/pages/ReportsPage.tsx",
+        "frontend/src/pages/TeamsPage.tsx",
+        "frontend/src/state/TournamentContext.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-team-management-create-teams-view-team-list-details-add-remove-players-to-from-teams-and-assign-a-captain-per-team",
+      "featureTitle": "Build Team Management: create teams, view team list/details, add/remove players to/from teams, and assign a captain per team.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/TeamDetailPage.tsx",
+        "frontend/src/pages/TeamsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-player-management-create-players-assign-a-default-team-optional-and-display-player-statistics-aggregated-from-ball-by-ball-events-including-batting-and-bowling-summaries",
+      "featureTitle": "Build Player Management: create players, assign a default team (optional), and display player statistics (aggregated from ball-by-ball events) including batting and bowling summaries.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/PlayerDetailPage.tsx",
+        "frontend/src/pages/PlayersPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-match-management-create-a-match-select-team-a-team-b-overs-limit-track-match-status-upcoming-live-completed-and-support-start-end-match-actions",
+      "featureTitle": "Implement Match Management: create a match (select Team A/Team B, overs limit), track match status (Upcoming/Live/Completed), and support start/end match actions.",
+      "files": [
+        "frontend/src/pages/MatchesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-live-scoring-panel-for-ball-by-ball-input-for-a-live-match-including-fast-buttons-for-runs-0-1-2-3-4-6-wicket-wide-and-no-ball-and-persist-each-delivery-event-to-the-backend",
+      "featureTitle": "Implement Live Scoring Panel for ball-by-ball input for a Live match, including fast buttons for runs (0,1,2,3,4,6), Wicket, Wide, and No Ball, and persist each delivery/event to the backend.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/scoring/LiveScoringPanel.tsx",
+        "frontend/src/pages/LiveScoringPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-live-scoreboard-display-page-for-a-selected-match-showing-team-score-runs-wickets-overs-run-rate-current-batsman-current-bowler-and-match-status-and-ensure-it-auto-refreshes-while-the-match-is-live",
+      "featureTitle": "Implement Live Scoreboard Display page for a selected match showing: team score (Runs/Wickets), overs, run rate, current batsman, current bowler, and match status, and ensure it auto-refreshes while the match is Live.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/ScoreboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-dashboard-page-showing-kpis-and-recent-activity-total-matches-live-matches-teams-count-players-count-and-a-recent-matches-list-scoped-to-the-active-tournament",
+      "featureTitle": "Build Dashboard page showing KPIs and recent activity: total matches, live matches, teams count, players count, and a recent matches list (scoped to the active tournament).",
+      "files": [
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-reports-page-that-can-generate-and-display-match-summaries-for-completed-matches-including-innings-totals-fall-of-wickets-if-available-from-events-and-top-batting-bowling-performers-computed-from-recorded-events",
+      "featureTitle": "Implement Reports page that can generate and display match summaries for completed matches, including innings totals, fall of wickets (if available from events), and top batting/bowling performers computed from recorded events.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/MatchReportPage.tsx",
+        "frontend/src/pages/ReportsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-static-generated-brand-assets-and-integrate-them-into-the-ui-app-logo-subtle-dashboard-background-hero-by-serving-them-from-frontend-static-assets-not-via-backend",
+      "featureTitle": "Add static generated brand assets and integrate them into the UI (app logo + subtle dashboard background/hero) by serving them from frontend static assets (not via backend).",
+      "files": [
+        "frontend/src/layout/AppShell.tsx",
+        "frontend/src/layout/SidebarNav.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

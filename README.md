@@ -1,2 +1,3 @@
-# cricket-scoresheet-live-scoring-saas-tournaments-academies-leagues
-Exported from Caffeine project: Cricket Scoresheet &amp; Live Scoring SaaS (Tournaments/Academies/Leagues)
+## Cricket Scoresheet &amp; Live Scoring SaaS (Tournaments/Academies/Leagues)
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

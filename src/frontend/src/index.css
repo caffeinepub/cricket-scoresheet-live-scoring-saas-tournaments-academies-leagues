@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        
+        /* Cricket-themed green palette */
+        --background: 0.98 0 0;
+        --foreground: 0.15 0 0;
+        
+        --card: 1 0 0;
+        --card-foreground: 0.15 0 0;
+        
+        --popover: 1 0 0;
+        --popover-foreground: 0.15 0 0;
+        
+        /* Deep cricket green as primary */
+        --primary: 0.45 0.12 145;
+        --primary-foreground: 0.98 0 0;
+        
+        --secondary: 0.96 0 0;
+        --secondary-foreground: 0.15 0 0;
+        
+        --muted: 0.96 0 0;
+        --muted-foreground: 0.50 0 0;
+        
+        --accent: 0.94 0 0;
+        --accent-foreground: 0.15 0 0;
+        
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        
+        --border: 0.90 0 0;
+        --input: 0.90 0 0;
+        --ring: 0.45 0.12 145;
+        
+        /* Chart colors - cricket themed */
+        --chart-1: 0.55 0.15 145;
+        --chart-2: 0.65 0.18 85;
+        --chart-3: 0.60 0.12 200;
+        --chart-4: 0.70 0.20 45;
+        --chart-5: 0.50 0.10 280;
+        
+        /* Sidebar colors */
+        --sidebar: 0.98 0 0;
+        --sidebar-foreground: 0.15 0 0;
+        --sidebar-primary: 0.45 0.12 145;
+        --sidebar-primary-foreground: 0.98 0 0;
+        --sidebar-accent: 0.94 0 0;
+        --sidebar-accent-foreground: 0.15 0 0;
+        --sidebar-border: 0.90 0 0;
+        --sidebar-ring: 0.45 0.12 145;
+    }
+
+    .dark {
+        --background: 0.12 0 0;
+        --foreground: 0.98 0 0;
+        
+        --card: 0.18 0 0;
+        --card-foreground: 0.98 0 0;
+        
+        --popover: 0.15 0 0;
+        --popover-foreground: 0.98 0 0;
+        
+        /* Brighter green for dark mode */
+        --primary: 0.65 0.15 145;
+        --primary-foreground: 0.12 0 0;
+        
+        --secondary: 0.22 0 0;
+        --secondary-foreground: 0.98 0 0;
+        
+        --muted: 0.22 0 0;
+        --muted-foreground: 0.65 0 0;
+        
+        --accent: 0.28 0 0;
+        --accent-foreground: 0.98 0 0;
+        
+        --destructive: 0.60 0.20 25;
+        --destructive-foreground: 0.98 0 0;
+        
+        --border: 0.25 0 0;
+        --input: 0.25 0 0;
+        --ring: 0.65 0.15 145;
+        
+        --chart-1: 0.60 0.18 145;
+        --chart-2: 0.70 0.20 85;
+        --chart-3: 0.65 0.15 200;
+        --chart-4: 0.75 0.22 45;
+        --chart-5: 0.55 0.12 280;
+        
+        --sidebar: 0.15 0 0;
+        --sidebar-foreground: 0.98 0 0;
+        --sidebar-primary: 0.65 0.15 145;
+        --sidebar-primary-foreground: 0.98 0 0;
+        --sidebar-accent: 0.22 0 0;
+        --sidebar-accent-foreground: 0.98 0 0;
+        --sidebar-border: 0.25 0 0;
+        --sidebar-ring: 0.65 0.15 145;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}
